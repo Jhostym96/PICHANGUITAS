@@ -10,9 +10,10 @@ import {
   CartView,
   MarketplaceView,
   FormContactView,
+  UsuarioView,
 } from "../pages";
 
-import { MainLayout, AdminLayout } from "../layout";
+import { MainLayout } from "../layout";
 
 // path => Nombre de la ruta /, /login, /registro
 
@@ -27,6 +28,8 @@ const Router = () => {
           <Route path="/FormContact" element={<FormContactView />} />
           <Route path="/product/:id" element={<ProductView />} />
           <Route path="/market" element={<MarketplaceView />} />
+          <Route path="/usuario" element={<UsuarioView />} />
+
         </Route>
 
         <Route path="/login" element={<LoginView />} />

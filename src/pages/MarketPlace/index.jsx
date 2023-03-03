@@ -15,10 +15,8 @@ import { Navigate } from "react-router-dom";
 
 const MarketPlace = () => {
 
-  const { user, isAuth } = useContext(AuthContext);
+  const { isAuth } = useContext(AuthContext);
 
-
-  console.log(Object.entries(user).length)
 
   const [stadium, setStadium] = useState(null);
 

@@ -14,4 +14,4 @@ export { default as MarketplaceView } from "./MarketPlace";
 
 export { default as FormContactView } from "./FormContact";
 
-// export { default as StadiumView } from "./Stadium";
+export { default as UsuarioView } from "./Usuario";
