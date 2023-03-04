@@ -42,8 +42,6 @@ const MarketPlace = () => {
 
   const { isAuth } = useContext(AuthContext);
 
-
-
   useEffect(() => {
     todoslosEstadios();
 

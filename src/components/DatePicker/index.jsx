@@ -9,13 +9,13 @@ import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 
-export default function DatePicker() {
-  const [value, setValue] = React.useState(dayjs('2014-08-18T21:11:54'));
+export default function DatePicker(props) {
+  const [dateTime, setDateTime]  = React.useState(dayjs('2014-08-18T21:11:54'));
 
-  const handleChange = (newValue) => {
-    setValue(newValue);
-
-    console.log(newValue)
+  const handleDateTimeChange = (date) => {
+    console.log("fecha de date picker: ",dayjs(date).format('DD/MM/YYYY hh:mm'));
+    setDateTime(date);
+    props.onDateChange(date);
   };
   
 
@@ -25,8 +25,8 @@ export default function DatePicker() {
         
         <DateTimePicker
           label="Date Time picker"
-          value={value}
-          onChange={handleChange}
+          value={dateTime}
+          onChange={handleDateTimeChange}
           renderInput={(params) => <TextField {...params} />}
         />
       </Stack>

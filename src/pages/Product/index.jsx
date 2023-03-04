@@ -6,53 +6,60 @@ import {
   Button,
   Typography,
   CardMedia,
-  TextField,
 } from "@mui/material";
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 import { DatePicker, ListElementsProducts } from "../../components";
 import StandardImageList from "../../components/StandardImageList";
 import StartsRating from "../../components/StartsRating";
-
+import * as React from 'react';
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Navigate, useParams } from "react-router-dom";
 import { unicoProducto } from "../../services/funciones";
 
 import { post } from "../../services/requests";
 import Swal from "sweetalert2";
+import dayjs from 'dayjs';
+import InputMask from 'react-input-mask';
+import { AuthContext } from "../../context/AuthContext";
 
+const Products = (props) => {
 
-const Products = () => {
+  const { isAuth } = React.useContext(AuthContext);
+
   const [stadium, setStadium] = useState(null);
 
   const params = useParams();
 
-  const [values, setValues] = useState(
-    ''
-  );
+  const [values, setValues] = useState('');
 
-  const [fecha, setFecha] = useState(null);
+  const [selectedDate, setDateTime] = React.useState(dayjs('2014-08-18T21:11:54'));
 
+  const [time, setTime] = useState('');
 
-
-  const handleInputChange = (e) => {
-
- 
-
-    // const { name, value } = e.target;
-    // setValues({
-    //   ...values,
-    //   [name]: value,
-    // });
-
-    console.log(DatePicker)
+  const handleDateChange = (date) => {
+    setDateTime(date);
   };
 
+  const handleInputChange = () => {
+    //event.preventDefault();
+    // aquí puede enviar el valor dateTime a una base de datos o utilizarlo en otra parte de su aplicación
+
+    console.log('fecha recibida: ', dayjs(selectedDate).format('DD/MM/YYYY hh:mm A'));
+    const Horas = dayjs(selectedDate).format('HH:mm');
+    console.log('Horas recibida: ', Horas);
+  };
+
+  const handleTimeChange = (e) => {
+    setTime(e.target.value);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const data = await post("reservas", values);
 
     console.log(data.hora_fin)
+
+    console.log(new Date(data.hora.fin))
 
     if (data) {
       Swal.fire({
@@ -78,12 +85,15 @@ const Products = () => {
     }
   };
 
-
-
   useEffect(() => {
     unicoProducto(params.id, setStadium);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  
+
+  if (!isAuth()) return <Navigate to="/login" />;
+
 
   return (
     <>
@@ -136,9 +146,23 @@ const Products = () => {
                     <Grid item xs={12} md={7}>
                       {/* <DatePicker value={values.hora_inicio} onChange={handleInputChange} /> */}
                       <br />
-                      <DatePicker />
+                      <DatePicker
+                        onDateChange={handleDateChange}
+                      />
                     </Grid>
-
+                    <Grid item xs={12} md={5}>
+                      <Typography variant={"h6"}>
+                        ingrese las horas o minutos
+                      </Typography>
+                    </Grid>
+                    <InputMask
+                      mask="99:99"
+                      maskChar=""
+                      value={time}
+                      onChange={handleTimeChange}
+                      id="time-input"
+                    />
+                    {time.length !== 5 && <p>Introduzca una hora válida en formato HH:mm</p>}
                   </Grid>
                 </Box>
                 {/* <Link to={"/cart"}> */}
