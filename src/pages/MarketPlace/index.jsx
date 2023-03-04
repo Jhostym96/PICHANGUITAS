@@ -1,5 +1,4 @@
 import { useContext, useEffect, useState } from "react";
-import { todoslosEstadios } from "../../services/funciones";
 import { Grid, Container } from "@mui/material";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
@@ -12,17 +11,46 @@ import { AuthContext } from "../../context/AuthContext";
 import { Navigate } from "react-router-dom";
 
 
-
 const MarketPlace = () => {
+
+  const { user } = useContext(AuthContext);
+
+  const [stadium, setStadium] = useState(null);
+
+
+  const todoslosEstadios = async () => {
+  
+    console.log(user)
+  
+      try {
+        const token = user.token;
+        const response = await fetch("http://localhost:5000/api/v1/fields",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        const data = await response.json();
+  
+        setStadium(data?.fields);
+
+        console.log(data.fields)
+  
+      } catch (error) {
+        console.error(error);
+      }
+    };
+  
 
   const { isAuth } = useContext(AuthContext);
 
 
-  const [stadium, setStadium] = useState(null);
 
   useEffect(() => {
-    todoslosEstadios(setStadium);
+    todoslosEstadios();
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (!isAuth()) return <Navigate to="/login" />;
@@ -39,12 +67,12 @@ const MarketPlace = () => {
                   <CardMedia
                     component="img"
                     height="140"
-                    image={stadium.image}
+                    image={stadium?.img}
                     alt="green iguana"
                   />
-                  <CardContent key={stadium.id}>
+                  <CardContent key={stadium?._id}>
                     <Typography gutterBottom variant="h5" component="div">
-                      {stadium.name}
+                      {stadium?.nameField}
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
                       Lizards are a widespread group of squamate reptiles,
@@ -53,7 +81,7 @@ const MarketPlace = () => {
                     </Typography>
                   </CardContent>
                   <CardActions>
-                    <Button href={`/product/${stadium.id}`} fullWidth variant="contained">
+                    <Button href={`/product/${stadium?._id}`} fullWidth variant="contained">
                       Reservar <AccessTimeIcon style={{ marginLeft: 10 }} />
                     </Button>
                   </CardActions>

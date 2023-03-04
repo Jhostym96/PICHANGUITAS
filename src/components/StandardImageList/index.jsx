@@ -1,19 +1,48 @@
 import * as React from "react";
 import ImageList from "@mui/material/ImageList";
 import ImageListItem from "@mui/material/ImageListItem";
-import { Box } from "@mui/system";
-import { Grid, Typography } from "@mui/material";
+import { Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 // import { unicoProducto } from "../../services/funciones";
+import { useContext } from "react";
+import { AuthContext } from "../../context/AuthContext";
 
 export default function StandardImageList() {
-  const [stadium, setStadium] = useState({});
 
+  const { user } = useContext(AuthContext);
+
+  const [stadium, setStadium] = useState({});
+  
   const params = useParams();
 
+  const unicoProducto = async (id) => {
+  
+      try {
+        const token = user.token;
+        const response = await fetch(`http://localhost:5000/api/v1/fields/${id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        const data = await response.json();
+  
+        setStadium(data?.field);
+
+        console.log(data.field)
+  
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+
+
   useEffect(() => {
-    // unicoProducto(params.id, setStadium);
+    unicoProducto(params.id);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   console.log(stadium["img1"]);
@@ -84,6 +113,8 @@ export default function StandardImageList() {
           </ImageListItem>
         ))}
       </ImageList>
+
+
       {/* <Grid container>
         <Grid item sx={12} md={6}>
           <Box component="img"
