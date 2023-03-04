@@ -62,7 +62,6 @@ const UserPage = () => {
     );
     const data = await response.json();
     const dataFinal = data?.reservasFuturas;
-    console.log(dataFinal);
     setReserFut(dataFinal);
   };
   const handleClick = () => {

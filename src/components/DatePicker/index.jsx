@@ -14,7 +14,10 @@ export default function DatePicker() {
 
   const handleChange = (newValue) => {
     setValue(newValue);
+
+    console.log(newValue)
   };
+  
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>

@@ -4,84 +4,54 @@ import ImageListItem from "@mui/material/ImageListItem";
 import { Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-// import { unicoProducto } from "../../services/funciones";
-import { useContext } from "react";
-import { AuthContext } from "../../context/AuthContext";
+import { unicoProducto } from "../../services/funciones";
 
 export default function StandardImageList() {
-
-  const { user } = useContext(AuthContext);
-
   const [stadium, setStadium] = useState({});
-  
+
   const params = useParams();
 
-  const unicoProducto = async (id) => {
-  
-      try {
-        const token = user.token;
-        const response = await fetch(`http://localhost:5000/api/v1/fields/${id}`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-        const data = await response.json();
-  
-        setStadium(data?.field);
-
-        console.log(data.field)
-  
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
-
-
   useEffect(() => {
-    unicoProducto(params.id);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    unicoProducto(params.id, setStadium);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  console.log(stadium["img1"]);
 
   const itemData = [
     {
-      img: stadium.img1,
-      title: "Stadium",
+      img: stadium.field?.img1,
+      title: "Stadium?",
     },
     {
-      img: stadium.img2,
+      img: stadium.field?.img2,
       title: "Burger",
     },
     {
-      img: stadium.img3,
+      img: stadium.field?.img3,
       title: "Camera",
     },
     {
-      img: stadium.img4,
+      img: stadium.field?.img4,
       title: "Coffee",
     },
     {
-      img: stadium.img5,
+      img: stadium.field?.img5,
       title: "Hats",
     },
     {
-      img: stadium.img6,
+      img: stadium.field?.img6,
       title: "Honey",
     },
     {
-      img: stadium.img7,
+      img: stadium.field?.img7,
       title: "Basketball",
     },
     {
-      img: stadium.img8,
+      img: stadium.field?.img8,
       title: "Fern",
     },
     {
-      img: stadium.img9,
+      img: stadium.field?.img9,
       title: "Mushrooms",
     },
   ];
@@ -113,22 +83,7 @@ export default function StandardImageList() {
           </ImageListItem>
         ))}
       </ImageList>
-
-
-      {/* <Grid container>
-        <Grid item sx={12} md={6}>
-          <Box component="img"
-        </Grid>
-        <Grid item sx={12} md={6}>
-          asd
-        </Grid>
-        <Grid item sx={12} md={4}>
-          asd
-        </Grid>
-        <Grid item sx={12} md={8}>
-          asd
-        </Grid>
-      </Grid> */}
+      
     </>
   );
 }

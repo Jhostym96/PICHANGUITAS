@@ -20,7 +20,6 @@ const MarketPlace = () => {
 
   const todoslosEstadios = async () => {
   
-    console.log(user)
   
       try {
         const token = user.token;
@@ -34,8 +33,6 @@ const MarketPlace = () => {
         const data = await response.json();
   
         setStadium(data?.fields);
-
-        console.log(data.fields)
   
       } catch (error) {
         console.error(error);

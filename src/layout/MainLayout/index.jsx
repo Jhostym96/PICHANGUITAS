@@ -8,8 +8,6 @@ const MainLayout = () => {
 
   const { user, logout } = useContext(AuthContext);
 
-  console.log(user)
-
 
   return (
     <div>
